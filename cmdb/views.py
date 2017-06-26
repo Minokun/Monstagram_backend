@@ -1,12 +1,12 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from . import models
-import time
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from cmdb.serializer import ResourceSerializer,UserSerializer,UserDetailSerializer,CommentSerializer
 from django.http import Http404
+from rest_framework.renderers import JSONRenderer
+from django.http import HttpResponse
+from django.core import serializers as dcs
 
 # 作品总列表接口
 class ResourceList(APIView):
@@ -22,6 +22,17 @@ class ResourceList(APIView):
             item['content'] = comment_serializer.data
             result.append(item)
         return Response(result)
+
+        # sql = """
+        #     select
+        #         *
+        #     from
+        #         resources r left join
+        #         (select uc.id ucid,u.nickname from user_comment uc left join user u on uc.user_id = u.id) as cu
+        #     on r.id = cu.ucid
+        # """
+        # result = models.Resources.objects.raw(sql)
+        # return HttpResponse(dcs.serialize('json',result))
 
     def post(self,request,format=None):
         serializer = ResourceSerializer(data=request.data)
