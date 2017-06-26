@@ -126,7 +126,7 @@ class Resources(models.Model):
     img_url = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.IntegerField(blank=True, null=True)
     updated_at = models.IntegerField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
+    status = models.IntegerField()
 
     class Meta:
         managed = False
