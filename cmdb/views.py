@@ -7,6 +7,7 @@ from django.http import Http404
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.core import serializers as dcs
+from Monstagram_backend.helper import apiTest
 
 # 作品总列表接口
 class ResourceList(APIView):
