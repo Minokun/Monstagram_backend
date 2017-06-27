@@ -2,6 +2,7 @@ from rest_framework import serializers
 from . import models
 
 class ResourceSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
     class Meta:
         model = models.Resources
         fields = ('id','user_id','title','img_url','created_at','updated_at')
@@ -19,7 +20,21 @@ class UserDetailSerializer(serializers.ModelSerializer):
         # exclue = ('users',)
         # read_only_fields = ('email',)
 
+
+class CcSerializer(serializers.RelatedField):
+    def to_representation(self,value):
+        result = {}
+        result['email'] = value.email
+        result['nickname'] = value.nickname
+        result['phone'] = value.phone
+        result['created_at'] = value.created_at
+        return result
+
+
 class CommentSerializer(serializers.ModelSerializer):
+    user = CcSerializer(read_only=True)
     class Meta:
         model = models.UserComment
-        fields = ('user_id','content','created_at')
+        fields = ('user_id','content','created_at','user')
+        depth = 1
+
