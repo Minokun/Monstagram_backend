@@ -2,12 +2,12 @@ from . import models
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from cmdb.serializer import ResourceSerializer,UserSerializer,UserDetailSerializer,CommentSerializer
+from cmdb.serializer import ResourceSerializer,UserSerializer,UserDetailSerializer,CommentSerializer,CommentCreateSerializer,UserCreateSerializer
 from django.http import Http404
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.core import serializers as dcs
-from Monstagram_backend.helper import apiTest
+from Monstagram_backend.helper import apiTest,md5
 
 # 作品总列表接口
 class ResourceList(APIView):
@@ -20,7 +20,7 @@ class ResourceList(APIView):
         for item in serializer.data:
             comment_data = models.UserComment.objects.filter(resources_id = item['id'])
             comment_serializer = CommentSerializer(comment_data,many=True)
-            item['content'] = comment_serializer.data
+            item['comment'] = comment_serializer.data
             result.append(item)
         return Response(result)
 
@@ -36,11 +36,16 @@ class ResourceList(APIView):
         # return HttpResponse(dcs.serialize('json',result))
 
     def post(self,request,format=None):
+        # 添加创建时间和更新时间
+        import time
+        request.data['created_at'] = int(time.time())
+        request.data['updated_at'] = int(time.time())
+        request.data['status'] = 1
         serializer = ResourceSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REAQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 # 用户总列表接口
 class User(APIView):
@@ -51,11 +56,17 @@ class User(APIView):
         return Response(serializer.data)
 
     def post(self,request,format=None):
-        serializer = UserSerializer(data=request.data)
+        # 添加创建时间和更新时间
+        import time
+        request.data['created_at'] = int(time.time())
+        request.data['updated_at'] = int(time.time())
+        # 这里对密码进行md5
+        request.data['password'] = md5(request.data['password'])
+        serializer = UserCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REAQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 # 用户详情接口
 class UserDetail(APIView):
@@ -81,7 +92,18 @@ class UserDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CommentList(APIView):
+
     def get(self,request,format=None):
         comment = models.UserComment.objects.all()
         serializer = CommentSerializer(comment,many=True)
         return Response(serializer.data)
+
+    def post(self,request,format=None):
+        # 添加创建时间和更新时间
+        import time
+        request.data['created_at'] = int(time.time())
+        serializer = CommentCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
