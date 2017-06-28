@@ -12,6 +12,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.User
         fields = ('id','email','nickname','prefix','phone','created_at','updated_at')
 
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ('id','password','email','nickname','prefix','phone','created_at','updated_at')
+
 class UserDetailSerializer(serializers.ModelSerializer):
     resources_set = ResourceSerializer(many=True, read_only=True)
     class Meta:
@@ -30,11 +35,18 @@ class CcSerializer(serializers.RelatedField):
         result['created_at'] = value.created_at
         return result
 
-
+# 评论查询
 class CommentSerializer(serializers.ModelSerializer):
     user = CcSerializer(read_only=True)
     class Meta:
         model = models.UserComment
-        fields = ('user_id','content','created_at','user')
+        fields = ('id','user_id','resources_id','content','created_at','user')
         depth = 1
 
+# 评论插入
+class CommentCreateSerializer(serializers.ModelSerializer):
+    user_id = serializers.IntegerField()
+    resources_id = serializers.IntegerField()
+    class Meta:
+        model = models.UserComment
+        fields = ('id','user_id', 'resources_id', 'content', 'created_at')
