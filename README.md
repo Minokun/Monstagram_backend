@@ -14,7 +14,7 @@
 ## **`注册`**
 ##### **接口调用请求说明**
 >HTTP请求方式：post
->请求数据格式：Content Type:application/x-www-form-urlencoded
+>请求数据格式：Content Type:application/json
 >URL：[//example.com/v1/user_list](localhost/v1/user_list)
 
 ##### **请求参数**
@@ -45,7 +45,7 @@
 ## **`首页作品展示列表`**
 ##### **接口调用请求说明**
 >HTTP请求方式：get
->请求数据格式：Content Type:application/x-www-form-urlencoded
+>请求数据格式：Content Type:application/json
 >URL：[//example.com/v1/resource_list](localhost/v1/resource_list)
 
 ##### **请求参数**
@@ -126,7 +126,7 @@
 ## **`作品发布`**
 ##### **接口调用请求说明**
 >HTTP请求方式：post
->请求数据格式：Content Type:application/x-www-form-urlencoded
+>请求数据格式：Content Type:application/json
 >URL：[//example.com/v1/resource_list](localhost/v1/resource_list)
 
 ##### **请求参数**
@@ -162,7 +162,7 @@
 ## **`提交评论`**
 ##### **接口调用请求说明**
 >HTTP请求方式：post
->请求数据格式：Content Type:application/x-www-form-urlencoded
+>请求数据格式：Content Type:application/json
 >URL：[//example.com/v1/resource_list](localhost/v1/resource_list)
 
 ##### **请求参数**
