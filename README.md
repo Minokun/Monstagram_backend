@@ -9,7 +9,6 @@
 >首页作品展示列表
 >作品发布
 >提交评论
->退出登录
 
 
 ## **`注册`**
@@ -61,6 +60,7 @@
     {
         "id": 1,
         "user_id": 1,
+        "nickname": "上帝",
         "title": "哇哈哈",
         "img_url": "http://www.baidu.com",
         "created_at": 145273623,
@@ -105,6 +105,7 @@
 |:-----   |:------|:-----------------------------   |
 |id|int|作品id|
 |user_id|int| 用户id |
+|nick_name|str| 用户昵称 |
 |title| string | 标题 |
 |img_url|string |图片地址|
 |created_at|int |创建时间|
