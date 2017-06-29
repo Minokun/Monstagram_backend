@@ -2,7 +2,7 @@ from . import models
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from cmdb.serializer import ResourceSerializer,UserSerializer,UserDetailSerializer,CommentSerializer,CommentCreateSerializer,UserCreateSerializer
+from cmdb.serializer import ResourceSerializer,UserSerializer,UserDetailSerializer,CommentSerializer,CommentCreateSerializer,UserCreateSerializer,UserInfoSerializer
 from django.http import Http404
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
@@ -15,13 +15,20 @@ class ResourceList(APIView):
     # 这里多表联合查询时我们可以将其分解为两部分
     def get(self,request,format=None):
         resource = models.Resources.objects.all()
+        # 添加昵称
+        nickname_list = []
+        for x in resource:
+            nickname_list.append(x.user.nickname)
         serializer = ResourceSerializer(resource,many=True)
         result = []
+        num = 0
         for item in serializer.data:
+            item['nickname'] = nickname_list[num]
             comment_data = models.UserComment.objects.filter(resources_id = item['id'])
             comment_serializer = CommentSerializer(comment_data,many=True)
             item['comment'] = comment_serializer.data
             result.append(item)
+            num += 1
         return Response(result)
 
         # sql = """
@@ -91,6 +98,7 @@ class UserDetail(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# 评论
 class CommentList(APIView):
 
     def get(self,request,format=None):
@@ -107,3 +115,11 @@ class CommentList(APIView):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+# 登录
+class Login(APIView):
+
+    def post(self,request,format=None):
+        info = models.User.objects.filter(email=request.data['email'])
+        serializer = UserInfoSerializer(info)
+        return Response(serializer.data)
