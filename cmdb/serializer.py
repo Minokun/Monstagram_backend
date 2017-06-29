@@ -25,6 +25,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
         # exclue = ('users',)
         # read_only_fields = ('email',)
 
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ('id','email','nickname','prefix','phone','created_at','updated_at')
 
 class CcSerializer(serializers.RelatedField):
     def to_representation(self,value):
