@@ -168,31 +168,29 @@
 ##### **请求参数**
 |参数名|必填|数据类型|说明|
 |:-----  |:-------|:-----|-----|     
-|user_id|Y|Int | 用户ID |     
-| title |Y| str | 标题 | 
-|img_url|Y| str | 图片地址 |
+|user_id|Y|Int | 评论用户ID |     
+|resources_id |Y| Int | 作品id | 
+|content|Y| str | 评论内容 |
 
 ##### **返回说明**
 正常时的返回JSON数据包：
 ```javascript
 {
     "id": 5,
-    "user_id": 2,
-    "title": "超人会飞",
-    "img_url": "http://www.sasd.com",
-    "created_at": 1498635568,
-    "updated_at": 1498635568
+    "user_id": 5,
+    "resources_id": 2,
+    "content": "这是一个神奇的世界",
+    "created_at": 1499321821
 }
 
 ```
 |参数名|数据类型|说明                              |
 |:-----   |:------|:-----------------------------   |
-|id|int|作品id|
+|id|int|评论id|
 |user_id|int| 用户id |
-|title| string | 标题 |
-|img_url|string |图片地址|
+|resources_id| int| 作品id |
 |created_at|int |创建时间|
-|updated_at|int |更新时间|
+|content|str | 评论内容 |
 
 
 

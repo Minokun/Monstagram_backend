@@ -14,6 +14,7 @@ class ResourceList(APIView):
     # 这里一定要注意 每个方法里必须包括request参数
     # 这里多表联合查询时我们可以将其分解为两部分
     def get(self,request,format=None):
+        import time
         resource = models.Resources.objects.all()
         # 添加昵称
         nickname_list = []
@@ -27,6 +28,22 @@ class ResourceList(APIView):
             comment_data = models.UserComment.objects.filter(resources_id = item['id'])
             comment_serializer = CommentSerializer(comment_data,many=True)
             item['comment'] = comment_serializer.data
+            # 计算时间差
+            now_time = int(time.time())
+            time_diff_seconds = now_time - item['created_at']
+            time_diff_day = int(time_diff_seconds / 60 / 60 / 24)
+            time_diff_hours = int(time_diff_seconds / 60 / 60)
+            time_diff_minutes = int(time_diff_seconds / 60)
+
+            if (time_diff_day > 0):
+                item['time_diff'] = str(time_diff_day) + ' 天'
+            elif (time_diff_hours > 0):
+                item['time_diff'] = str(time_diff_hours) + ' 时'
+            elif (time_diff_minutes > 0):
+                item['time_diff'] = str(time_diff_minutes) + ' 分'
+            else:
+                item['time_diff'] = str(time_diff_seconds) + ' 秒'
+
             result.append(item)
             num += 1
         return Response(result)
