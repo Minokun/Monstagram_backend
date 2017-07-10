@@ -137,6 +137,13 @@ class CommentList(APIView):
 class Login(APIView):
 
     def post(self,request,format=None):
-        info = models.User.objects.filter(email=request.data['email'])
-        serializer = UserInfoSerializer(info)
-        return Response(serializer.data)
+        try:
+            info = models.User.objects.get(email=request.data['email'])
+        except Exception as e:
+            return apiTest({'status':0,'message':'用户不存在！'})
+
+        user_password_md5 = md5(request.data['password'])
+        if (info.password == user_password_md5):
+            return apiTest({'status':1,'message':'登录成功！','data':{'user_id':info.id,'nickname':info.nickname}})
+        else:
+            return apiTest({'status':0,'message':'密码错误！',})
