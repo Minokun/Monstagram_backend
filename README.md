@@ -40,6 +40,31 @@
 }
 ```
 
+## **`登录`**
+##### **接口调用请求说明**
+>HTTP请求方式：post
+>请求数据格式：Content Type:application/json
+>URL：[//example.com/v1/login](localhost/v1/login)
+
+##### **请求参数**
+|参数名|必填|数据类型|说明|
+|:-----  |:-------|:-----|-----|     
+|email|Y| str | 用户邮箱 |     
+|password|Y|str|密码|
+
+##### **返回说明**
+正常时的返回JSON数据包：
+```javascript
+{
+    "id": 3,
+    "email": "2524231862@qq.com",
+    "nickname": "蜘蛛侠",
+    "prefix": 86,
+    "phone": 13060029781,
+    "created_at": 1498643575,
+    "updated_at": 1498643575
+}
+```
 
 
 ## **`首页作品展示列表`**
