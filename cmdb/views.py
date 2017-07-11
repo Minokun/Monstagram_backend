@@ -15,7 +15,7 @@ class ResourceList(APIView):
     # 这里多表联合查询时我们可以将其分解为两部分
     def get(self,request,format=None):
         import time
-        resource = models.Resources.objects.all()
+        resource = models.Resources.objects.all().order_by("-created_at")
         # 添加昵称
         nickname_list = []
         for x in resource:

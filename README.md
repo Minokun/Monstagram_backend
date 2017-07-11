@@ -56,13 +56,12 @@
 正常时的返回JSON数据包：
 ```javascript
 {
-    "id": 3,
-    "email": "2524231862@qq.com",
-    "nickname": "蜘蛛侠",
-    "prefix": 86,
-    "phone": 13060029781,
-    "created_at": 1498643575,
-    "updated_at": 1498643575
+    "status": 1,
+    "message": "登录成功！",
+    "data": {
+        "user_id": 5,
+        "nickname": "蜘蛛侠"
+    }
 }
 ```
 
@@ -165,12 +164,8 @@
 正常时的返回JSON数据包：
 ```javascript
 {
-    "id": 5,
-    "user_id": 2,
-    "title": "超人会飞",
-    "img_url": "http://www.sasd.com",
-    "created_at": 1498635568,
-    "updated_at": 1498635568
+    "status":1,
+    "pic_url": "http://localhost:8000/static/102438879.jpeg"
 }
 
 ```
