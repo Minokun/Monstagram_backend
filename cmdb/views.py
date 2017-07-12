@@ -25,6 +25,10 @@ class ResourceList(APIView):
         num = 0
         for item in serializer.data:
             item['nickname'] = nickname_list[num]
+            # 计算点赞数
+            item['praise_num'] = models.UserLikes.objects.filter(resources_id=item['id']).count()
+
+
             comment_data = models.UserComment.objects.filter(resources_id = item['id'])
             comment_serializer = CommentSerializer(comment_data,many=True)
             item['comment'] = comment_serializer.data
@@ -147,3 +151,19 @@ class Login(APIView):
             return apiTest({'status':1,'message':'登录成功！','data':{'user_id':info.id,'nickname':info.nickname}})
         else:
             return apiTest({'status':0,'message':'密码错误！',})
+
+class Praise(APIView):
+
+    def post(self,request,format=None):
+        import time
+        create_at = int(time.time())
+        user_praise = models.UserLikes.objects.create(user_id=request.data['user_id'],resources_id=request.data['resources_id'],created_at=create_at)
+        if (user_praise):
+            return apiTest({'status':1,'message':'操作成功！'})
+        else:
+            return apiTest({'status':0,'messaga':'操作失败！'})
+
+class PraiseCheck(APIView):
+
+    def get(self,request,user_id,resource_id,format=None):
+        return apiTest({'user_id':user_id})

@@ -8,6 +8,8 @@ urlpatterns = [
     url(r'^user_list/',views.User.as_view()),
     url(r'^comment_list/',views.CommentList.as_view()),
     url(r'^login/',views.Login.as_view()),
+    url(r'^praise/',views.Praise.as_view()),
+    url(r'^praise_check/',views.PraiseCheck.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
