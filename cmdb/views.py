@@ -14,6 +14,7 @@ class ResourceList(APIView):
     # 这里一定要注意 每个方法里必须包括request参数
     # 这里多表联合查询时我们可以将其分解为两部分
     def get(self,request,format=None):
+        uid = request.GET.get("user_id")
         import time
         resource = models.Resources.objects.all().order_by("-created_at")
         # 添加昵称
@@ -27,7 +28,7 @@ class ResourceList(APIView):
             item['nickname'] = nickname_list[num]
             # 计算点赞数
             item['praise_num'] = models.UserLikes.objects.filter(resources_id=item['id']).count()
-
+            item['praise_check'] = models.UserLikes.objects.filter(resources_id=item['id'],user_id=uid).count()
 
             comment_data = models.UserComment.objects.filter(resources_id = item['id'])
             comment_serializer = CommentSerializer(comment_data,many=True)
@@ -163,7 +164,12 @@ class Praise(APIView):
         else:
             return apiTest({'status':0,'messaga':'操作失败！'})
 
-class PraiseCheck(APIView):
+class PraiseCancel(APIView):
 
-    def get(self,request,user_id,resource_id,format=None):
-        return apiTest({'user_id':user_id})
+    def delete(self,request,format=None):
+        status = models.UserLikes.objects.filter(user_id=request.data['user_id'],resources_id=request.data['resources_id']).delete()
+        if (status):
+            return apiTest({'status':1,'message':'操作成功！'})
+        else:
+            return apiTest({'status':0,'messaga':'操作失败！'})
+
