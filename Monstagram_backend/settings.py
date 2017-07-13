@@ -111,7 +111,7 @@ WSGI_APPLICATION = 'Monstagram_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mydb',
+        'NAME': 'monstagram',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',

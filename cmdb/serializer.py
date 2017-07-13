@@ -5,7 +5,7 @@ class ResourceSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField()
     class Meta:
         model = models.Resources
-        fields = ('id','user_id','title','img_url','created_at','updated_at')
+        fields = ('id','user_id','title','img_url','status','created_at','updated_at')
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
