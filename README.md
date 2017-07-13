@@ -10,6 +10,7 @@
 >作品发布
 >提交评论
 >点赞
+>取消点赞
 >查询当前用户是否点赞
 
 
@@ -226,6 +227,33 @@
 >HTTP请求方式：post
 >请求数据格式：Content Type:application/json
 >URL：[//example.com/v1/praise](localhost/v1/praise)
+
+##### **请求参数**
+|参数名|必填|数据类型|说明|
+|:-----  |:-------|:-----|-----|     
+|user_id|Y|Int | 评论用户ID |     
+|resources_id |Y| Int | 作品id | 
+
+##### **返回说明**
+正常时的返回JSON数据包：
+```javascript
+{
+    "status": 1,
+    "message": "操作成功！"
+}
+
+```
+|参数名|数据类型|说明                              |
+|:-----   |:------|:-----------------------------   |
+|status|int|状态|
+|message|int| 具体信息 |
+
+
+## **`取消点赞`**
+##### **接口调用请求说明**
+>HTTP请求方式：post
+>请求数据格式：Content Type:application/json
+>URL：[//example.com/v1/praise_cancel](localhost/v1/praise_cancel)
 
 ##### **请求参数**
 |参数名|必填|数据类型|说明|
